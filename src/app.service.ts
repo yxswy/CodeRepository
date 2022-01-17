@@ -1,49 +1,27 @@
 import { Injectable } from '@nestjs/common'
-import { parse, compileTemplate, compileScript } from 'vue/compiler-sfc'
-import { renderToString } from '@vue/server-renderer'
+// import { parse, compileTemplate, compileScript } from 'vue/compiler-sfc'
+// import { renderToString } from '@vue/server-renderer'
 import { createSSRApp } from 'vue'
 import type { App } from 'vue'
 import { readFileSync } from 'fs'
-import { resolve } from 'path/posix'
+import { resolve } from 'path'
+import { vite, manifest } from './ssr-vue/index'
 
 @Injectable()
 export class AppService {
   async getHello(): Promise<string> {
-    console.log(resolve('./src/views/app.vue'))
-    const fileContent = await readFileSync(
-      resolve('./src/views/app.vue'),
-      'utf-8',
-    )
 
-    const parseContent = parse(fileContent)
-    const templatContent = compileTemplate({
-      source: parseContent.descriptor.template.content,
-      filename: 'App.vue',
-      id: 'App.vue',
-    })
-    console.log(templatContent.code)
-    const scriptContent = compileScript(parseContent.descriptor, {
-      id: 'App.vue',
-    })
-    console.log(scriptContent.content)
+    const url = 'http://localhost:4000'
+    let template = readFileSync(resolve('./src/ssr-vue/index.html'), 'utf-8')
 
-    // const { render } = eval(templatContent.code)
-    // console.log(render)
+    template = await vite.transformIndexHtml(url, template)
+    let render = (await vite.ssrLoadModule('./src/ssr-vue/src/entry-server.ts')).render
 
-    const app = createSSRApp({
-      
-    })
-    // const app = this.createApp()
-    const appContent = await renderToString(app)
+    const [appHtml, preloadLinks] = await render(url, manifest)
 
-    const html = `
-      <html>
-        <body>
-          <h1>My First Heading</h1>
-          <div id="app">${appContent}</div>
-        </body>
-      </html>
-    `
+    const html = template
+      .replace(`<!--preload-links-->`, preloadLinks)
+      .replace(`<!--app-html-->`, appHtml)
 
     return html
   }
