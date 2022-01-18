@@ -8,9 +8,10 @@ import * as serveStatic from 'serve-static'
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule)
 
-  // app.useStaticAssets(join(__dirname, '..', 'public'),{
-  //   prefix: '/static/',
-  // })
+  app.useStaticAssets(join(__dirname, '..', 'dist'),{
+    prefix: '/dist/',
+  })
+
   app.use(
     '/public',
     serveStatic(join(__dirname, '../public'), {
