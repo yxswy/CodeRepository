@@ -1,0 +1,80 @@
+@font-face {
+  font-family: "Impact";
+  src: url("../../public/CascadiaMono.ttf");
+}
+
+.font {
+  font-family: Impact;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: $bgColor;
+  font-family: Impact, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica,
+    Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--color-fg-default);
+}
+
+main {
+  width: 1180px;
+  margin: 0 auto;
+  padding: 32px 0;
+  box-sizing: content-box;
+  display: flex;
+  .app-main {
+    width: 896px;
+    flex: 1;
+    .main-title {
+      font-size: 20px;
+      margin: 16px 0;
+      font-weight: 600;
+    }
+  }
+  aside {
+    width: 285px;
+    margin-top: 75px;
+    margin-right: 32px;
+    border-radius: 6px;
+    height: fit-content;
+    min-height: 180px;
+    .title {
+      color: var(--color-fg-default);
+      font-size: 16px;
+      font-weight: 600;
+    }
+  }
+}
+
+ul {
+  padding: 0;
+  margin: 0;
+  padding-left: 14px;
+  li {
+    color: transparent;
+    &.active {
+      color: $themeColor;
+    }
+    a {
+      color: $themeColor;
+      cursor: pointer;
+      line-height: 28px;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+.action {
+  height: 62px;
+  width: 100%;
+  color: $themeColor;
+  margin-left: 14px;
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline;
+  }
+}

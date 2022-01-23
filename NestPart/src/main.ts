@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core'
 import { AppModule } from './app.module'
-import { NotFoundFilter } from './not-found.filter'
+import { NotFoundFilter } from './filters/not-found.filter'
 import { logger } from './middleware/logger.middleware'
 import * as express from 'express'
 
@@ -13,7 +13,7 @@ async function bootstrap() {
   app.useGlobalFilters(new NotFoundFilter())
   app.use(logger)
 
-  await app.listen(3000)
+  await app.listen(3010)
 }
 
 bootstrap()
