@@ -15,6 +15,7 @@ export class AppService {
     let template = readFileSync(resolve('./src/ssr-vue/index.html'), 'utf-8')
 
     template = await vite.transformIndexHtml(url, template)
+    console.log(template)
     let render = (await vite.ssrLoadModule('./src/ssr-vue/src/entry-server.ts')).render
 
     const [appHtml, preloadLinks] = await render(url, manifest)
