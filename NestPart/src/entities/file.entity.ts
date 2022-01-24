@@ -18,7 +18,7 @@ export class FileEntity {
     @Column({ comment: '展示标题' })
     file_title: string
 
-    @Column({ comment: '展示内容' })
+    @Column({ comment: '展示内容', type: 'text' })
     file_content: string
 
     @Column({ comment: '阅读次数', default: 0 })

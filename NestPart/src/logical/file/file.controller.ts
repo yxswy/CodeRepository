@@ -5,7 +5,7 @@ import { FileService } from './file.service';
 export class FileController {
     constructor(private readonly fileService: FileService) { }
 
-    @Get('list')
+    @Get('list')    
     async list() {
         return this.fileService.getFileList()
     }
