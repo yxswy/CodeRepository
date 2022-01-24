@@ -25,13 +25,16 @@
     "@nestjs/core": "^8.0.0",
     "@nestjs/platform-express": "^8.0.0",
     "@nestjs/serve-static": "^2.2.2",
+    "@nestjs/typeorm": "^8.0.3",
     "chalk": "4.0.0",
     "dayjs": "^1.10.7",
     "log4js": "^6.3.0",
+    "mysql": "^2.18.1",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0",
-    "stacktrace-js": "^2.0.2"
+    "stacktrace-js": "^2.0.2",
+    "typeorm": "^0.2.41"
   },
   "devDependencies": {
     "@nestjs/cli": "^8.0.0",

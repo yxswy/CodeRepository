@@ -3,24 +3,36 @@ import '@/styles/index.scss'
 import hljs from 'highlight.js'
 import 'highlight.js/styles/agate.css'
 import http from './utils/http/simple'
-import { onMounted, ref } from 'vue'
+import { onMounted, reactive } from 'vue'
 
-let html = ref('')
-let extname = ref('')
-let fileName = ref('')
+let state = reactive<{
+  html: string,
+  list: any[],
+  form: Record<string, any>
+}>({
+  html: '',
+  form: {},
+  list: []
+})
 
 const init = () => {
   http({
-    url: 'http://localhost:3010/',
+    url: 'http://localhost:3010/file/list',
   }).then(res => {
-    const content: string = res?.data?.content
-    html.value = hljs.highlight(content, { language: 'js' }).value
-    extname.value = res?.data?.extname
-    fileName.value = res?.data?.name
+    state.list = res?.data || []
   })
 }
 
 onMounted(init)
+
+const showCode = (id: string) => {
+  http({
+    url: 'http://localhost:3010/file/detail/' + id,
+  }).then(res => {
+    state.html = hljs.highlight(res?.data?.file_content || "", { language: 'js' }).value
+    state.form = res?.data || {}
+  })
+}
 </script>
 
 <template>
@@ -29,31 +41,19 @@ onMounted(init)
       <aside>
         <p class="title">相关文章</p>
         <ul>
-          <li class="active">
-            <a>node服务系列发的作品</a>
-          </li>
-          <li>
-            <a>node服务使用http原生的作品</a>
-          </li>
-          <li>
-            <a>node服务下载文node服务下载文件品node服务下载文件品node服务下载文件品件品</a>
-          </li>
-          <li>
-            <a>node服务系formDatat品</a>
-          </li>
-          <li>
-            <a>node服务袋里转发，docker安装</a>
+          <li class="active" v-for="item in state.list" :key="item.id" @click="showCode(item.id)">
+            <a>{{ item.file_title }}</a>
           </li>
         </ul>
       </aside>
       <div class="app-main">
-        <div class="main-title">{{ fileName }}</div>
+        <div class="main-title">{{ state.form.file_title }}</div>
         <p>
           <span>浏览次数：203158次</span>
           <a class="action">download</a>
           <a class="action">copy-all</a>
         </p>
-        <pre><code :class="{ [`language-` + extname]: true }" v-html="html"></code></pre>
+        <pre><code :class="{ [`language-` + state.form.file_extname]: true }" v-html="state.html"></code></pre>
       </div>
       <router-view />
     </main>
