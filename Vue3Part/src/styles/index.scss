@@ -18,6 +18,10 @@ body {
   color: var(--color-fg-default);
 }
 
+.el-scrollbar {
+  height: 100vh !important;
+}
+
 main {
   width: 1180px;
   margin: 0 auto;
@@ -77,4 +81,9 @@ ul {
   &:hover {
     text-decoration: underline;
   }
+}
+
+#nprogress .bar {
+  background: #42b983 !important; //自定义颜色
+  height: 4px !important;
 }
