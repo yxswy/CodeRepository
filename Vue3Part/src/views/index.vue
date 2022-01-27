@@ -32,14 +32,13 @@ export default defineComponent({
     const init = () => {
       const route = useRoute();
 
-      unWatch = watch(route, (newValue) => {
-        console.log(newValue.params);
-        const { id } = newValue.params;
+      const getData = () => {
+        const { id } = route.params;
 
         if (id) {
           NProgress.start();
           http({
-            url: "http://localhost:3010/file/detail/" + id,
+            url: "http://192.168.20.158:3010/file/detail/" + id,
           })
             .then((res) => {
               Object.assign(form, res?.data || {});
@@ -48,7 +47,8 @@ export default defineComponent({
               NProgress.done(true);
             });
         }
-      });
+      };
+      unWatch = watch(route, getData, { immediate: true });
     };
     onMounted(init);
     onUnmounted(() => {
@@ -67,7 +67,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="main-title tran" :class="{ top108: !file_title }">
+  <div class="main-title tran">
     {{ file_title || "Welcome" }}
   </div>
   <div class="tran" v-show="file_title">

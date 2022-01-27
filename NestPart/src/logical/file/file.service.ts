@@ -19,7 +19,6 @@ export class FileService {
             const filesPath = await this.readdir()
 
             filesPath.forEach(async filePath => {
-                console.log('filePath', filePath)
                 if (res.some(item => item.file_path === filePath)) {
 
                 } else {

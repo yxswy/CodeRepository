@@ -4,7 +4,6 @@ import "highlight.js/styles/agate.css";
 import http from "./utils/http/simple";
 import { onMounted, reactive } from "vue";
 import { ElScrollbar } from "element-plus";
-import { IState } from "./types";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
@@ -17,7 +16,7 @@ let state = reactive<{
 
 const init = () => {
   http({
-    url: "http://localhost:3010/file/list",
+    url: "http://192.168.20.158:3010/file/list",
   }).then((res) => {
     state.list = res?.data || [];
   });

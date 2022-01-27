@@ -35,7 +35,6 @@ function asyncPool<T, K>(poolLimit: number, array: Array<T>, iteratorFn: Iterato
 asyncPool<string, number>(1, ['arg1', 'arg2', 'arg3'], (item, array) => {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
-            console.log(item, array)
             resolve(100)
         }, 3000)
     })
