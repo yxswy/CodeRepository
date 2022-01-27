@@ -1,52 +1,45 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-
-defineProps<{ msg: string }>()
-
-const count = ref(0)
+defineProps<{ loading: boolean }>();
 </script>
 
 <template>
-  <h1>{{ msg }}</h1>
-
-  <p>
-    Recommended IDE setup:
-    <a href="https://code.visualstudio.com/" target="_blank">VSCode</a>
-    +
-    <a href="https://github.com/johnsoncodehk/volar" target="_blank">Volar</a>
-  </p>
-
-  <p>See <code>README.md</code> for more information.</p>
-
-  <p>
-    <a href="https://vitejs.dev/guide/features.html" target="_blank">
-      Vite Docs
-    </a>
-    |
-    <a href="https://v3.vuejs.org/" target="_blank">Vue 3 Docs</a>
-  </p>
-
-  <button type="button" @click="count++">count is: {{ count }}</button>
-  <p>
-    Edit
-    <code>components/HelloWorld.vue</code> to test hot module replacement.
-  </p>
+  <div class="app-loading" v-if="loading">
+    <div class="loading"></div>
+  </div>
 </template>
 
-<style scoped>
-a {
-  color: #42b983;
+<style scoped lang="scss">
+.app-loading {
+  width: 101%;
+  height: 101%;
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba($color: white, $alpha: 0.1);
+  pointer-events: none;
+  .loading {
+    width: 32px;
+    height: 32px;
+    border-radius: 50px;
+    border-width: 4px;
+    border-top-color: #42b983;
+    border-bottom-color: transparent;
+    border-left-color: #42b983;
+    border-right-color: transparent;
+    animation: identifier 0.76s infinite linear;
+    border-style: solid;
+  }
 }
 
-label {
-  margin: 0 0.5em;
-  font-weight: bold;
-}
-
-code {
-  background-color: #eee;
-  padding: 2px 4px;
-  border-radius: 4px;
-  color: #304455;
+@keyframes identifier {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 </style>
