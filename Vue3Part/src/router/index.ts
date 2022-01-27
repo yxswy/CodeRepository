@@ -4,9 +4,9 @@ import type { RouteRecordRaw, RouteMeta } from "vue-router";
 
 import Layout from "@/layouts/index.vue";
 
-interface AppRouteRecordRaw extends Omit<RouteRecordRaw, 'meta'> {
+interface AppRouteRecordRaw extends Omit<RouteRecordRaw, "meta"> {
   meta: RouteMeta;
-  hidden: boolean
+  hidden: boolean;
 }
 
 const routes: AppRouteRecordRaw[] = [
@@ -23,10 +23,17 @@ const routes: AppRouteRecordRaw[] = [
         name: "HomePage",
         component: () => import("@/views/index.vue"),
         meta: {
-          title: 'i123',
-
-        }
-      }
+          title: "i123",
+        },
+      },
+      {
+        path: "homepage/:id",
+        name: "HomePageDetail",
+        component: () => import("@/views/index.vue"),
+        meta: {
+          title: "i123",
+        },
+      },
     ],
   },
 ];

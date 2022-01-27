@@ -10,16 +10,12 @@ defineProps<{ loading: boolean }>();
 
 <style scoped lang="scss">
 .app-loading {
-  width: 101%;
-  height: 101%;
-  position: absolute;
-  top: 0;
-  right: 0;
+  width: 100%;
+  height: 100%;
   display: flex;
-  justify-content: center;
+  padding-left: 80px;
   align-items: center;
-  background-color: rgba($color: white, $alpha: 0.1);
-  pointer-events: none;
+  // pointer-events: none;
   .loading {
     width: 32px;
     height: 32px;

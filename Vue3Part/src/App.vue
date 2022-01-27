@@ -1,27 +1,17 @@
 <script setup lang="ts">
 import "@/styles/index.scss";
-import hljs from "highlight.js";
 import "highlight.js/styles/agate.css";
 import http from "./utils/http/simple";
 import { onMounted, reactive } from "vue";
 import { ElScrollbar } from "element-plus";
-import Loader from "./components/HelloWorld.vue";
-import NProgress from "nprogress";
-import "nprogress/nprogress.css";
-// import 'nprogress/test'
+import { IState } from "./types";
+import { useRouter } from "vue-router";
 
-NProgress.configure({
-  minmum: 1.1,
-  showSpinner: false,
-});
+const router = useRouter();
 
 let state = reactive<{
-  html: string;
   list: any[];
-  form: Record<string, any>;
 }>({
-  html: "",
-  form: {},
   list: [],
 });
 
@@ -36,19 +26,7 @@ const init = () => {
 onMounted(init);
 
 const showCode = (id: string) => {
-  NProgress.start();
-  http({
-    url: "http://localhost:3010/file/detail/" + id,
-  })
-    .then((res) => {
-      state.html = hljs.highlight(res?.data?.file_content || "", {
-        language: "js",
-      }).value;
-      state.form = res?.data || {};
-    })
-    .finally(() => {
-      NProgress.done(true);
-    });
+  router.push({ path: "/homepage/" + id });
 };
 </script>
 
@@ -56,7 +34,7 @@ const showCode = (id: string) => {
   <ElScrollbar>
     <main>
       <aside>
-        <p class="title">相关文章</p>
+        <p class="title">Article</p>
         <ul>
           <li
             class="active"
@@ -69,42 +47,8 @@ const showCode = (id: string) => {
         </ul>
       </aside>
       <div class="app-main">
-        <div class="main-title">{{ state.form.file_title }}</div>
-        <p>
-          <span>浏览次数：203158次</span>
-          <a class="action">download</a>
-          <a class="action">copy-all</a>
-        </p>
-        <Loader :loading="false" />
-        <pre><code :class="{ [`language-` + state.form.file_extname]: true }" v-html="state.html"></code>
-        </pre>
+        <router-view />
       </div>
-      <router-view />
     </main>
   </ElScrollbar>
 </template>
-
-<style lang="scss" scoped>
-pre {
-  width: 100%;
-  min-height: 180px;
-  border: 1px solid $borderColor;
-  border-radius: 6px;
-  padding: 14px;
-  box-sizing: border-box;
-  position: relative;
-  overflow: hidden;
-  font-size: 0;
-  code {
-    font-family: Impact !important;
-    font-size: 14px;
-  }
-  &.over {
-    border-color: white;
-  }
-  img {
-    width: 38px;
-    height: 38px;
-  }
-}
-</style>
