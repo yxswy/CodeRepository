@@ -4,9 +4,10 @@ import "highlight.js/styles/agate.css";
 import http from "./utils/http/simple";
 import { onMounted, reactive } from "vue";
 import { ElScrollbar } from "element-plus";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 
 const router = useRouter();
+const route = useRoute();
 
 let state = reactive<{
   list: any[];
@@ -36,7 +37,7 @@ const showCode = (id: string) => {
         <p class="title">Article</p>
         <ul>
           <li
-            class="active"
+            :class="{ active: route.params.id === String(item.id) }"
             v-for="item in state.list"
             :key="item.id"
             @click="showCode(item.id)"

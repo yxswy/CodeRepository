@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
 import { ServeStaticModule } from '@nestjs/serve-static'
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { TypeOrmModule } from '@nestjs/typeorm'
 import { join } from 'path'
 
 import { FileModule } from './logical/file/file.module'
@@ -20,12 +20,11 @@ import { FileModule } from './logical/file/file.module'
       synchronize: true, // 定义数据库表结构与实体类字段同步(这里一旦数据库少了字段就会自动加入,根据需要来使用)
     }),
     ServeStaticModule.forRoot({
-      exclude: ['/static*'],
-      rootPath: join(__dirname, 'static'),
+      rootPath: join(__dirname, 'public'),
     }),
-    FileModule
+    FileModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {}

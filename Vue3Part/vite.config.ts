@@ -8,7 +8,10 @@ function pathResolve(dir) {
 
 export default defineConfig({
   plugins: [vue()],
-  base: "./",
+  base: "/",
+  build: {
+    outDir: "../NestPart/src/public",
+  },
   resolve: {
     alias: [
       {
