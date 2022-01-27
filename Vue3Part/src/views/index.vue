@@ -73,8 +73,8 @@ export default defineComponent({
   <div class="tran" v-show="file_title">
     <p>
       <span>浏览次数：203158次</span>
-      <a class="action">download</a>
-      <a class="action">copy-all</a>
+      <a class="action">下载</a>
+      <a class="action">复制</a>
     </p>
   </div>
   <pre
