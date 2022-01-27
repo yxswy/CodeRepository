@@ -19,7 +19,7 @@ const init = () => {
   http({
     url: "http://192.168.20.158:3010/file/list",
   }).then((res) => {
-    state.list = res?.data || [];
+    state.list = res?.data?.data || [];
   });
 };
 
