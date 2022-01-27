@@ -1,26 +1,37 @@
 import type { App } from "vue";
 import { createRouter, createWebHashHistory } from "vue-router";
-import type { RouteRecordRaw, Router } from "vue-router";
+import type { RouteRecordRaw, RouteMeta } from "vue-router";
 
 import Layout from "@/layouts/index.vue";
 
-const routes: RouteRecordRaw[] = [
+interface AppRouteRecordRaw extends Omit<RouteRecordRaw, 'meta'> {
+  meta: RouteMeta;
+  hidden: boolean
+}
+
+const routes: AppRouteRecordRaw[] = [
   {
     path: "/",
     name: "App",
     redirect: "/homepage",
     component: Layout,
+    hidden: false,
+    meta: {},
     children: [
       {
         path: "homepage",
         name: "HomePage",
         component: () => import("@/views/index.vue"),
+        meta: {
+          title: 'i123',
+
+        }
       }
     ],
   },
 ];
 const router = createRouter({
-  routes,
+  routes: routes as unknown as RouteRecordRaw[],
   history: createWebHashHistory("/"),
   scrollBehavior(to, from, savePosition) {
     if (savePosition) {
