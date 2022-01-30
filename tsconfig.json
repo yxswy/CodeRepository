@@ -1,0 +1,22 @@
+{
+    "compilerOptions": {
+        "lib": [
+            "es5",
+            "es6",
+            "DOM"
+        ],
+        "target": "es5",
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "allowSyntheticDefaultImports": true
+    },
+    "exclude": [
+        "static/",
+        "web/",
+        "publc/",
+        "dist/",
+        "src/public/"
+    ]
+}
