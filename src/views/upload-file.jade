@@ -1,0 +1,8 @@
+extends layout
+
+block content
+  h1='文件上传'
+  input(type="file", name="file", id="input", multiple="multiple")
+
+  script(type='text/javascript', src='https://unpkg.com/axios/dist/axios.min.js')
+  script(type='text/javascript', src='/release/upload-file.js')

@@ -45,6 +45,7 @@ var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 var cors = require("cors");
 var path_1 = require("path");
+var multer = require("multer");
 var User_1 = require("./entity/User");
 var router_1 = require("./router");
 // 创建 typeorm 连接
@@ -59,8 +60,11 @@ var router_1 = require("./router");
     app.use(logger('dev'));
     // 解析 body
     app.use(bodyParser.json());
+    app.use(bodyParser.urlencoded({ extended: false }));
+    app.use(multer({ dest: '/tmp/' }).array('file'));
     // 设置客户端可访问的静态文件
     app.use('/release', express.static('dist'));
+    app.use('/release', express.static((0, path_1.join)(__dirname, 'views/release')));
     app.use(express.static((0, path_1.join)(__dirname, 'public')));
     // 跨域
     app.use(cors());

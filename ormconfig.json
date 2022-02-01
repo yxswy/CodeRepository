@@ -6,5 +6,5 @@
   "password": "888888",
   "database": "my_database",
   "entities": ["src/entity/*.js"],
-  "logging": true
+  "logging": false
 }

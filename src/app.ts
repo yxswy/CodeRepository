@@ -8,6 +8,7 @@ import * as cookieParser from 'cookie-parser'
 import * as logger from 'morgan'
 import * as cors from 'cors'
 import { join } from 'path'
+import * as multer from 'multer'
 
 import { User } from './entity/User'
 import router from './router'
@@ -28,9 +29,12 @@ createConnection().then((connection) => {
 
     // 解析 body
     app.use(bodyParser.json())
+    app.use(bodyParser.urlencoded({ extended: false }))
+    app.use(multer({ dest: '/tmp/' }).array('file'))
 
     // 设置客户端可访问的静态文件
     app.use('/release', express.static('dist'))
+    app.use('/release', express.static(join(__dirname, 'views/release')))
     app.use(express.static(join(__dirname, 'public')))
 
     // 跨域

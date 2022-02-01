@@ -35,7 +35,7 @@ var FileEntity = /** @class */ (function () {
         __metadata("design:type", String)
     ], FileEntity.prototype, "file_title", void 0);
     __decorate([
-        (0, typeorm_1.Column)({ comment: '展示内容', type: 'text' }),
+        (0, typeorm_1.Column)({ comment: '展示内容', type: 'longtext' }),
         __metadata("design:type", String)
     ], FileEntity.prototype, "file_content", void 0);
     __decorate([

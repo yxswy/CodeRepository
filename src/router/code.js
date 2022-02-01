@@ -35,21 +35,26 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __asyncValues = (this && this.__asyncValues) || function (o) {
+    if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
+    var m = o[Symbol.asyncIterator], i;
+    return m ? m.call(o) : (o = typeof __values === "function" ? __values(o) : o[Symbol.iterator](), i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i);
+    function verb(n) { i[n] = o[n] && function (v) { return new Promise(function (resolve, reject) { v = o[n](v), settle(resolve, reject, v.done, v.value); }); }; }
+    function settle(resolve, reject, d, v) { Promise.resolve(v).then(function(v) { resolve({ value: v, done: d }); }, reject); }
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var express = require("express");
 var typeorm_1 = require("typeorm");
 var File_1 = require("../entity/File");
+var fs_1 = require("fs");
+var path_1 = require("path");
+var readline_1 = require("readline");
+var chalk_1 = require("chalk");
 var router = express.Router();
 router.get('/', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var result;
     return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0: return [4 /*yield*/, (0, typeorm_1.getRepository)(File_1.FileEntity).find()];
-            case 1:
-                result = _a.sent();
-                res.send('Hello Code');
-                return [2 /*return*/];
-        }
+        res.render('upload-file');
+        return [2 /*return*/];
     });
 }); });
 router.get('/list', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
@@ -88,6 +93,119 @@ router.get('/detail/:id', function (req, res) { return __awaiter(void 0, void 0,
                     data: item || {},
                 });
                 return [2 /*return*/];
+        }
+    });
+}); });
+function processLineByLine(filePath) {
+    var e_1, _a;
+    return __awaiter(this, void 0, void 0, function () {
+        var fileStream, fileName, fileExtname, rl, lineCount, fileTitle, fileContent, rl_1, rl_1_1, line, e_1_1;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
+                case 0:
+                    fileStream = (0, fs_1.createReadStream)(filePath);
+                    fileName = (0, path_1.basename)(filePath);
+                    fileExtname = (0, path_1.extname)(filePath).slice(1);
+                    rl = (0, readline_1.createInterface)({
+                        input: fileStream,
+                        crlfDelay: Infinity,
+                    });
+                    lineCount = 1;
+                    fileTitle = '';
+                    fileContent = '';
+                    _b.label = 1;
+                case 1:
+                    _b.trys.push([1, 6, 7, 12]);
+                    rl_1 = __asyncValues(rl);
+                    _b.label = 2;
+                case 2: return [4 /*yield*/, rl_1.next()];
+                case 3:
+                    if (!(rl_1_1 = _b.sent(), !rl_1_1.done)) return [3 /*break*/, 5];
+                    line = rl_1_1.value;
+                    if (lineCount === 1) {
+                        fileTitle = line.slice(3);
+                    }
+                    else {
+                        fileContent = fileContent + line + '\r\n';
+                    }
+                    lineCount++;
+                    _b.label = 4;
+                case 4: return [3 /*break*/, 2];
+                case 5: return [3 /*break*/, 12];
+                case 6:
+                    e_1_1 = _b.sent();
+                    e_1 = { error: e_1_1 };
+                    return [3 /*break*/, 12];
+                case 7:
+                    _b.trys.push([7, , 10, 11]);
+                    if (!(rl_1_1 && !rl_1_1.done && (_a = rl_1.return))) return [3 /*break*/, 9];
+                    return [4 /*yield*/, _a.call(rl_1)];
+                case 8:
+                    _b.sent();
+                    _b.label = 9;
+                case 9: return [3 /*break*/, 11];
+                case 10:
+                    if (e_1) throw e_1.error;
+                    return [7 /*endfinally*/];
+                case 11: return [7 /*endfinally*/];
+                case 12: return [2 /*return*/, {
+                        fileName: fileName,
+                        fileTitle: fileTitle,
+                        fileContent: fileContent,
+                        fileExtname: fileExtname,
+                    }];
+            }
+        });
+    });
+}
+router.post('/upload', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var files, file, originalname, tempPath, filePath, data, _a, fileName, fileTitle, fileContent, fileExtname, respository, response, e_2, response;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
+            case 0:
+                _b.trys.push([0, 5, , 6]);
+                files = req.files || [];
+                if (files.length < 1) {
+                    throw new Error('文件异常');
+                }
+                file = files[0];
+                originalname = file.originalname;
+                if (!originalname) {
+                    throw new Error('文件异常');
+                }
+                tempPath = file.path;
+                filePath = (0, path_1.join)(__dirname, '../../static', originalname) //文件名
+                ;
+                data = (0, fs_1.readFileSync)(tempPath);
+                return [4 /*yield*/, (0, fs_1.writeFileSync)(filePath, data)];
+            case 1:
+                _b.sent();
+                return [4 /*yield*/, processLineByLine(filePath)];
+            case 2:
+                _a = _b.sent(), fileName = _a.fileName, fileTitle = _a.fileTitle, fileContent = _a.fileContent, fileExtname = _a.fileExtname;
+                return [4 /*yield*/, (0, typeorm_1.getRepository)(File_1.FileEntity)];
+            case 3:
+                respository = _b.sent();
+                return [4 /*yield*/, respository.query('INSERT INTO file_entity (file_name, file_path, file_extname, file_title, file_content)  VALUES  (?, ?, ?, ?, ?);', [fileName, filePath, fileExtname, fileTitle, fileContent])];
+            case 4:
+                _b.sent();
+                console.log(fileName, filePath, fileExtname);
+                response = {
+                    message: 'File uploaded successfully.',
+                    filename: originalname,
+                };
+                res.json(response);
+                return [3 /*break*/, 6];
+            case 5:
+                e_2 = _b.sent();
+                console.log((0, chalk_1.red)(e_2));
+                response = {
+                    message: 'Failed to upload files.',
+                    detailedInformation: e_2,
+                };
+                res.json(response);
+                return [3 /*break*/, 6];
+            case 6: return [2 /*return*/];
         }
     });
 }); });
